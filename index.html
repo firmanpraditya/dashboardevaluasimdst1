@@ -881,6 +881,9 @@
       document.getElementById('agSerapanTerendahNama').textContent = ov.serapan_terendah_nama || '-';
     }
 
+    const COLOR_PENUNJANG = '#8b5cf6';   // ungu
+    const COLOR_PEMBANGUNAN = '#f59e0b'; // oranye
+    
     function renderCharts() {
       destroyCharts();
 
@@ -944,13 +947,13 @@
             {
               label:'Penunjang',
               data:['Terlaksana','Tidak Terlaksana','Belum Dievaluasi'].map(k => statusByKategori.Penunjang[k]),
-              backgroundColor:'rgba(124,58,237,0.80)',
+              backgroundColor: COLOR_PENUNJANG,
               borderRadius:6
             },
             {
               label:'Pembangunan',
               data:['Terlaksana','Tidak Terlaksana','Belum Dievaluasi'].map(k => statusByKategori.Pembangunan[k]),
-              backgroundColor:'rgba(37,99,235,0.80)',
+              backgroundColor: COLOR_PEMBANGUNAN,
               borderRadius:6
             }
           ]
@@ -976,13 +979,13 @@
             {
               label:'NKC Penunjang',
               data:sortedBadan.map(b => b.nkc_penunjang || 0),
-              backgroundColor:'rgba(124,58,237,0.85)',
+              backgroundColor: COLOR_PENUNJANG,
               borderRadius:6
             },
             {
               label:'NKC Pembangunan',
               data:sortedBadan.map(b => b.nkc_pembangunan || 0),
-              backgroundColor:'rgba(37,99,235,0.85)',
+              backgroundColor: COLOR_PEMBANGUNAN,
               borderRadius:6
             }
           ]
@@ -1006,13 +1009,13 @@
             {
               label:'Serapan Penunjang (%)',
               data:badanData.map(b => Math.min(b.serap_penunjang || 0, 100)),
-              backgroundColor:'rgba(124,58,237,0.75)',
+              backgroundColor: COLOR_PENUNJANG,
               borderRadius:5
             },
             {
               label:'Serapan Pembangunan (%)',
               data:badanData.map(b => Math.min(b.serap_pembangunan || 0, 100)),
-              backgroundColor:'rgba(16,185,129,0.72)',
+              backgroundColor: COLOR_PEMBANGUNAN,
               borderRadius:5
             }
           ]
@@ -1037,25 +1040,25 @@
             {
               label:'Target Penunjang',
               data:badanData.map(b => round2((b.rencana_p || 0) / 1000000)),
-              backgroundColor:'rgba(124,58,237,0.30)',
+              backgroundColor:'rgba(139,92,246,0.30)',
               borderRadius:4
             },
             {
               label:'Realisasi Penunjang',
               data:badanData.map(b => round2((b.real_p || 0) / 1000000)),
-              backgroundColor:'rgba(124,58,237,0.85)',
+              backgroundColor:'rgba(139,92,246,0.90)',
               borderRadius:4
             },
             {
               label:'Target Pembangunan',
               data:badanData.map(b => round2((b.rencana_b || 0) / 1000000)),
-              backgroundColor:'rgba(37,99,235,0.28)',
+              backgroundColor:'rgba(245,158,11,0.30)',
               borderRadius:4
             },
             {
               label:'Realisasi Pembangunan',
               data:badanData.map(b => round2((b.real_b || 0) / 1000000)),
-              backgroundColor:'rgba(37,99,235,0.85)',
+              backgroundColor:'rgba(245,158,11,0.90)',
               borderRadius:4
             }
           ]
@@ -1093,14 +1096,14 @@
             <div class="mini-bar-row">
               <span class="mini-bar-label">Penunjang</span>
               <div class="mini-bar-track">
-                <div class="mini-bar-fill" style="width:${Math.min(b.nkc_penunjang || 0,100)}%;background:#7c3aed"></div>
+                <div class="mini-bar-fill" style="width:${Math.min(b.nkc_penunjang || 0,100)}%;background:${COLOR_PENUNJANG}"></div>
               </div>
               <span class="mini-bar-val">${b.nkc_penunjang !== null ? formatNumber(b.nkc_penunjang,1) : '—'}</span>
             </div>
             <div class="mini-bar-row">
               <span class="mini-bar-label">Pembangunan</span>
               <div class="mini-bar-track">
-                <div class="mini-bar-fill" style="width:${Math.min(b.nkc_pembangunan || 0,100)}%;background:#2563eb"></div>
+                <div class="mini-bar-fill" style="width:${Math.min(b.nkc_pembangunan || 0,100)}%;background:${COLOR_PEMBANGUNAN}"></div>
               </div>
               <span class="mini-bar-val">${b.nkc_pembangunan !== null ? formatNumber(b.nkc_pembangunan,1) : '—'}</span>
             </div>
