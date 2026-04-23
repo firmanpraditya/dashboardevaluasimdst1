@@ -581,27 +581,30 @@
         </div>
 
         <div class="stats-row">
-          <div class="stat-card blue">
-            <div class="stat-label">Total Badan</div>
-            <div class="stat-value blue" id="ovTotalBadan">0</div>
-            <div class="stat-sub">Badan Pembantu</div>
-          </div>
-          <div class="stat-card green">
-            <div class="stat-label">Program Terlaksana</div>
-            <div class="stat-value green" id="ovTerlaksana">0</div>
-            <div class="stat-sub" id="ovTerlaksanaSub">dari 0 total kegiatan</div>
-          </div>
-          <div class="stat-card red">
-            <div class="stat-label">Tidak Terlaksana</div>
-            <div class="stat-value red" id="ovTidak">0</div>
-            <div class="stat-sub">kegiatan gagal dilaksanakan</div>
-          </div>
-          <div class="stat-card yellow">
-            <div class="stat-label">Belum Dievaluasi</div>
-            <div class="stat-value yellow" id="ovBelum">0</div>
-            <div class="stat-sub">kegiatan perlu tindak lanjut</div>
-          </div>
+        <div class="stat-card blue">
+          <div class="stat-label">Total Program</div>
+          <div class="stat-value blue" id="ovTotalProgram">0</div>
+          <div class="stat-sub" id="ovTotalProgramSub">Pembangunan 0 | Penunjang 0</div>
         </div>
+      
+        <div class="stat-card green">
+          <div class="stat-label">Program Terlaksana</div>
+          <div class="stat-value green" id="ovTerlaksana">0</div>
+          <div class="stat-sub" id="ovTerlaksanaSub">Pembangunan 0 | Penunjang 0</div>
+        </div>
+      
+        <div class="stat-card red">
+          <div class="stat-label">Tidak Terlaksana</div>
+          <div class="stat-value red" id="ovTidak">0</div>
+          <div class="stat-sub" id="ovTidakSub">Pembangunan 0 | Penunjang 0</div>
+        </div>
+      
+        <div class="stat-card yellow">
+          <div class="stat-label">Belum Dievaluasi</div>
+          <div class="stat-value yellow" id="ovBelum">0</div>
+          <div class="stat-sub" id="ovBelumSub">Pembangunan 0 | Penunjang 0</div>
+        </div>
+      </div>
 
         <div class="chart-grid cols-2">
           <div class="chart-card">
@@ -872,18 +875,33 @@
 
     function renderOverview() {
       const ov = dashboardData.overview;
+    
       document.getElementById('headerBadge').textContent = 'TAHUN ' + dashboardData.meta.tahun;
-      document.getElementById('ovTotalBadan').textContent = formatNumber(ov.total_badan);
+    
+      document.getElementById('ovTotalProgram').textContent = formatNumber(ov.total_program);
+      document.getElementById('ovTotalProgramSub').textContent =
+        `Pembangunan ${formatNumber(ov.total_program_pembangunan)} | Penunjang ${formatNumber(ov.total_program_penunjang)}`;
+    
       document.getElementById('ovTerlaksana').textContent = formatNumber(ov.terlaksana);
-      document.getElementById('ovTerlaksanaSub').textContent = `dari ${formatNumber(ov.total_program)} total kegiatan`;
+      document.getElementById('ovTerlaksanaSub').textContent =
+        `Pembangunan ${formatNumber(ov.terlaksana_pembangunan)} | Penunjang ${formatNumber(ov.terlaksana_penunjang)}`;
+    
       document.getElementById('ovTidak').textContent = formatNumber(ov.tidak_terlaksana);
+      document.getElementById('ovTidakSub').textContent =
+        `Pembangunan ${formatNumber(ov.tidak_terlaksana_pembangunan)} | Penunjang ${formatNumber(ov.tidak_terlaksana_penunjang)}`;
+    
       document.getElementById('ovBelum').textContent = formatNumber(ov.belum_dievaluasi);
-
+      document.getElementById('ovBelumSub').textContent =
+        `Pembangunan ${formatNumber(ov.belum_dievaluasi_pembangunan)} | Penunjang ${formatNumber(ov.belum_dievaluasi_penunjang)}`;
+    
       document.getElementById('agTotalRencana').textContent = formatCurrency(ov.total_anggaran);
       document.getElementById('agTotalRealisasi').textContent = formatCurrency(ov.total_realisasi);
-      document.getElementById('agRataSerapan').innerHTML = `${formatNumber(ov.rata_serapan,1)}<span style="font-size:18px;">%</span>`;
-      document.getElementById('agSerapanTerendah').innerHTML = `${formatNumber(ov.serapan_terendah_nilai,1)}<span style="font-size:18px;">%</span>`;
-      document.getElementById('agSerapanTerendahNama').textContent = ov.serapan_terendah_nama || '-';
+      document.getElementById('agRataSerapan').innerHTML =
+        `${formatNumber(ov.rata_serapan,1)}<span style="font-size:18px;">%</span>`;
+      document.getElementById('agSerapanTerendah').innerHTML =
+        `${formatNumber(ov.serapan_terendah_nilai,1)}<span style="font-size:18px;">%</span>`;
+      document.getElementById('agSerapanTerendahNama').textContent =
+        ov.serapan_terendah_nama || '-';
     }
 
     const COLOR_PENUNJANG = '#8b5cf6';   // ungu
