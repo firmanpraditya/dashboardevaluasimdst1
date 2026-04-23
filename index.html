@@ -711,32 +711,6 @@
 
         <div class="badan-grid" id="badanGrid"></div>
 
-        <div class="modal-overlay hidden" id="detailModal" onclick="closeDetailModal(event)">
-        <div class="modal-box" onclick="event.stopPropagation()">
-          <div class="modal-head">
-            <h3 id="detailTitle">Detail Program</h3>
-            <button class="modal-close" onclick="closeDetailModal()">×</button>
-          </div>
-      
-          <div class="table-scroll">
-            <table class="detail-table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Program / Kegiatan</th>
-                  <th>Kategori</th>
-                  <th>Serapan</th>
-                  <th>NKC</th>
-                  <th>Predikat</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody id="detailBody"></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
       <div class="page" id="page-program">
         <div class="section-head">
           <div class="dot"></div>
@@ -1372,5 +1346,32 @@
       }
     });
   </script>
+
+  <div class="modal-overlay hidden" id="detailModal" onclick="closeDetailModal(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <h3 id="detailTitle">Detail Program</h3>
+      <button class="modal-close" onclick="closeDetailModal()">×</button>
+    </div>
+
+    <div class="table-scroll">
+      <table class="detail-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Program / Kegiatan</th>
+            <th>Kategori</th>
+            <th>Serapan</th>
+            <th>NKC</th>
+            <th>Predikat</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="detailBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+  
 </body>
 </html>
