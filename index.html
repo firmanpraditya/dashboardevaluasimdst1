@@ -119,7 +119,6 @@
   <button class="tab active" onclick="showPage('overview',this)">🏠 Overview</button>
   <button class="tab" onclick="showPage('badan',this)">📋 Per Badan</button>
   <button class="tab" onclick="showPage('program',this)">📊 Program Detail</button>
-  <button class="tab" onclick="showPage('trend',this)">📈 Tren 3 Tahun</button>
   <button class="tab" onclick="showPage('anggaran',this)">💰 Anggaran</button>
 </nav>
 <main>
@@ -175,15 +174,6 @@
           <tbody id="fullTableBody"></tbody>
         </table>
       </div>
-    </div>
-
-    <div class="page" id="page-trend">
-      <div class="section-head"><div class="dot"></div><h2 id="trendTitle">Tren 3 Tahun</h2><p>Perkembangan NKC per badan dari tahun ke tahun</p></div>
-      <div class="chart-grid" style="grid-template-columns:1fr;margin-bottom:28px;">
-        <div class="chart-card"><h3>Tren NKC Badan</h3><p>Perbandingan capaian lintas tahun</p><div class="chart-wrap" style="height:360px;"><canvas id="chartTrend"></canvas></div></div>
-      </div>
-      <div class="section-head" style="margin-top:8px;"><div class="dot"></div><h2>Kartu Tren Per Badan</h2></div>
-      <div class="trend-grid" id="trendGrid"></div>
     </div>
 
     <div class="page" id="page-anggaran">
