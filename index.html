@@ -643,7 +643,6 @@
                   <th>ID</th>
                   <th>Program / Kegiatan</th>
                   <th>Kategori</th>
-                  <th>Real/Target</th>
                   <th>Serapan</th>
                   <th>NKC</th>
                   <th>Predikat</th>
@@ -680,7 +679,6 @@
                 <th onclick="sortTable(0)">Badan ↕</th>
                 <th onclick="sortTable(1)">Kategori ↕</th>
                 <th>Program / Kegiatan</th>
-                <th onclick="sortTable(3)">Real/Target ↕</th>
                 <th>Serapan</th>
                 <th onclick="sortTable(5)">NKC ↕</th>
                 <th onclick="sortTable(6)">Predikat ↕</th>
@@ -1149,7 +1147,6 @@
             <td><span style="font-family:'Space Mono',monospace;font-size:10px;color:#64748b">${escapeHtml(p.id || '')}</span></td>
             <td>${escapeHtml(p.nama || '')}</td>
             <td><span style="font-size:10px;color:${String(p.kat).toLowerCase().includes('penunjang') ? '#7c3aed' : '#2563eb'}">${escapeHtml(p.kat || '')}</span></td>
-            <td style="font-family:'Space Mono',monospace">${formatNumber(p.real)}/${formatNumber(p.target)}</td>
             <td>
               <div class="prog">
                 <div class="prog-track">
@@ -1179,7 +1176,6 @@
             <td style="font-weight:700;color:#0f172a">${escapeHtml(p.badan || '')}</td>
             <td><span style="font-size:10px;color:${String(p.kat).toLowerCase().includes('penunjang') ? '#7c3aed' : '#2563eb'}">${escapeHtml(p.kat || '')}</span></td>
             <td>${escapeHtml(p.nama || '')}</td>
-            <td style="font-family:'Space Mono',monospace;color:#64748b">${formatNumber(p.real)}/${formatNumber(p.target)}</td>
             <td>
               <div class="prog">
                 <div class="prog-track">
@@ -1204,7 +1200,7 @@
 
     function sortTable(col) {
       sortDir[col] = !sortDir[col];
-      const keys = ['badan','kat','nama','real','serap','nkc','predikat','status'];
+      const keys = ['badan','kat','nama','serap','nkc','predikat','status'];
       const key = keys[col];
 
       const data = [...allRows].sort((a,b) => {
