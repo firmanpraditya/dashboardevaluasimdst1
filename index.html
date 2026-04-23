@@ -703,15 +703,16 @@
       </div>
 
       <div class="page" id="page-badan">
-        <div class="section-head">
-          <div class="dot"></div>
-          <h2>Evaluasi Per Badan</h2>
-          <p>Klik kartu badan untuk melihat detail program</p>
-        </div>
+      <div class="section-head">
+        <div class="dot"></div>
+        <h2>Evaluasi Per Badan</h2>
+        <p>Klik kartu badan untuk melihat detail program</p>
+      </div>
+    
+      <div class="badan-grid" id="badanGrid"></div>
+    </div>
 
-        <div class="badan-grid" id="badanGrid"></div>
-
-      <div class="page" id="page-program">
+    <div class="page" id="page-program">
         <div class="section-head">
           <div class="dot"></div>
           <h2>Seluruh Program</h2>
@@ -736,9 +737,9 @@
                 <th onclick="sortTable(1)">Kategori ↕</th>
                 <th>Program / Kegiatan</th>
                 <th>Serapan</th>
-                <th onclick="sortTable(5)">NKC ↕</th>
-                <th onclick="sortTable(6)">Predikat ↕</th>
-                <th onclick="sortTable(7)">Status ↕</th>
+                <th onclick="sortTable(4)">NKC ↕</th>
+                <th onclick="sortTable(5)">Predikat ↕</th>
+                <th onclick="sortTable(6)">Status ↕</th>
               </tr>
             </thead>
             <tbody id="fullTableBody"></tbody>
