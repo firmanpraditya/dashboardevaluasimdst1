@@ -614,6 +614,49 @@
         transform: translateY(0) scale(1);
       }
     }
+
+        .loading-box {
+      padding: 24px 28px;
+    }
+    
+    .loading-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    
+    .loading-sub {
+      font-size: 13px;
+      color: var(--text2);
+      margin-bottom: 18px;
+    }
+    
+    .progress-wrap {
+      width: 100%;
+      height: 12px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 10px;
+    }
+    
+    .progress-bar {
+      height: 100%;
+      width: 5%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #7c3aed, #2563eb, #10b981);
+      transition: width 0.35s ease;
+    }
+    
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--text3);
+    }
     
   </style>
 </head>
@@ -625,7 +668,7 @@
     <div class="logo-area">
       <div class="logo-box">PKT</div>
       <div class="logo-text">
-        <h1>Dashboard Evaluasi PKT Majelis Daerah Surbaya Timur 1</h1>
+        <h1>Dashboard Evaluasi PKT Majelis Daerah Surabaya Timur 1</h1>
       </div>
     </div>
     <div class="top-actions">
@@ -642,7 +685,19 @@
   </nav>
 
   <main>
-    <div id="loadingBox" class="loading-box">Mohon tunggu ya gaess sedang proses load data...</div>
+    <div id="loadingBox" class="loading-box">
+      <div class="loading-title">Mohon tunggu, data dashboard sedang diproses</div>
+      <div class="loading-sub" id="loadingText">Menghubungkan ke Google Sheets...</div>
+    
+      <div class="progress-wrap">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    
+      <div class="progress-meta">
+        <span id="progressPercent">5%</span>
+        <span>Harap menunggu sebentar</span>
+      </div>
+    </div>
     <div id="errorBox" class="error-box hidden"></div>
 
     <div id="dashboardContent" class="hidden">
@@ -802,6 +857,9 @@
     let sortDir = {};
     let activeCard = null;
 
+    let loadingTimer = null;
+    let loadingProgress = 0;
+
     const chartText = '#475569';
     const chartGrid = 'rgba(148,163,184,0.18)';
     const chartBorder = '#ffffff';
@@ -900,6 +958,10 @@
       document.getElementById('loadingBox').classList.toggle('hidden', !isLoading);
       document.getElementById('dashboardContent').classList.toggle('hidden', isLoading);
       document.getElementById('errorBox').classList.add('hidden');
+    
+      if (isLoading) {
+        startFakeProgress();
+      }
     }
 
     function showError(message) {
@@ -1301,6 +1363,61 @@
       buildFullTable(data);
     }
 
+    function startFakeProgress() {
+      clearInterval(loadingTimer);
+      loadingProgress = 5;
+    
+      const bar = document.getElementById('progressBar');
+      const percent = document.getElementById('progressPercent');
+      const text = document.getElementById('loadingText');
+    
+      if (bar) bar.style.width = loadingProgress + '%';
+      if (percent) percent.textContent = loadingProgress + '%';
+      if (text) text.textContent = 'Menghubungkan ke Google Sheets...';
+    
+      loadingTimer = setInterval(() => {
+        if (loadingProgress < 25) {
+          loadingProgress += 6;
+          text.textContent = 'Mengambil data evaluasi...';
+        } else if (loadingProgress < 55) {
+          loadingProgress += 4;
+          text.textContent = 'Mengolah ringkasan dashboard...';
+        } else if (loadingProgress < 80) {
+          loadingProgress += 3;
+          text.textContent = 'Menyusun chart dan tabel...';
+        } else if (loadingProgress < 92) {
+          loadingProgress += 1;
+          text.textContent = 'Hampir selesai...';
+        }
+    
+        if (bar) bar.style.width = loadingProgress + '%';
+        if (percent) percent.textContent = loadingProgress + '%';
+      }, 250);
+    }
+    
+    function finishFakeProgress() {
+      clearInterval(loadingTimer);
+    
+      const bar = document.getElementById('progressBar');
+      const percent = document.getElementById('progressPercent');
+      const text = document.getElementById('loadingText');
+    
+      loadingProgress = 100;
+      if (bar) bar.style.width = '100%';
+      if (percent) percent.textContent = '100%';
+      if (text) text.textContent = 'Selesai memuat dashboard';
+    }
+    
+    function stopFakeProgressOnError() {
+      clearInterval(loadingTimer);
+    
+      const text = document.getElementById('loadingText');
+      const percent = document.getElementById('progressPercent');
+    
+      if (text) text.textContent = 'Gagal memuat data';
+      if (percent) percent.textContent = 'Error';
+    }
+
     async function loadDashboard(tahun) {
       try {
         showLoading(true);
@@ -1322,12 +1439,22 @@
         buildBadanGrid();
         buildFullTable(allRows);
 
+        finishFakeProgress();
+        
+        setTimeout(() => {
+          document.getElementById('dashboardContent').classList.remove('hidden');
+          document.getElementById('loadingBox').classList.add('hidden');
+          document.getElementById('errorBox').classList.add('hidden');
+          document.getElementById('yearSelect').value = String(dashboardData.meta.tahun || tahun);
+        }, 250);
+
         document.getElementById('dashboardContent').classList.remove('hidden');
         document.getElementById('loadingBox').classList.add('hidden');
         document.getElementById('errorBox').classList.add('hidden');
         document.getElementById('yearSelect').value = String(dashboardData.meta.tahun || tahun);
 
       } catch (err) {
+        stopFakeProgressOnError();
         showError(err && err.message ? err.message : 'Gagal memuat dashboard.');
       }
     }
