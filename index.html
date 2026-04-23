@@ -541,6 +541,80 @@
       .chart-grid.cols-2,
       .badan-grid { grid-template-columns:1fr; }
     }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.35);
+      backdrop-filter: blur(3px);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      animation: fadeInModal 0.2s ease;
+    }
+    
+    .modal-box {
+      width: min(1100px, 96vw);
+      max-height: 88vh;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 24px 80px rgba(15, 23, 42, 0.20);
+      overflow: hidden;
+      animation: zoomInModal 0.2s ease;
+    }
+    
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border);
+      background: #f8fafc;
+    }
+    
+    .modal-head h3 {
+      font-size: 17px;
+      font-weight: 800;
+      margin: 0;
+    }
+    
+    .modal-close {
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 10px;
+      background: #eef2ff;
+      color: #4338ca;
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    
+    .modal-close:hover {
+      background: #e0e7ff;
+      transform: scale(1.05);
+    }
+    
+    @keyframes fadeInModal {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes zoomInModal {
+      from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    
   </style>
 </head>
 <body>
@@ -637,8 +711,13 @@
 
         <div class="badan-grid" id="badanGrid"></div>
 
-        <div class="detail-panel" id="detailPanel">
-          <h3 id="detailTitle">Detail Program</h3>
+        <div class="modal-overlay hidden" id="detailModal" onclick="closeDetailModal(event)">
+        <div class="modal-box" onclick="event.stopPropagation()">
+          <div class="modal-head">
+            <h3 id="detailTitle">Detail Program</h3>
+            <button class="modal-close" onclick="closeDetailModal()">×</button>
+          </div>
+      
           <div class="table-scroll">
             <table class="detail-table">
               <thead>
@@ -1146,32 +1225,23 @@
     }
 
     function showBadanDetail(badanName, card) {
-      const panel = document.getElementById('detailPanel');
-
-      if (activeCard === card && panel.classList.contains('show')) {
-        panel.classList.remove('show');
-        card.classList.remove('active');
-        activeCard = null;
-        return;
-      }
-
       if (activeCard) activeCard.classList.remove('active');
       activeCard = card;
       card.classList.add('active');
-
+    
       const programs = allRows.filter(p => p.badan === badanName);
       document.getElementById('detailTitle').textContent = `Detail Program — ${badanName}`;
-
+    
       const tbody = document.getElementById('detailBody');
       tbody.innerHTML = '';
-
+    
       programs.forEach(p => {
         const nkcColor = getColorByPredikat(p.predikat);
         tbody.innerHTML += `
           <tr>
             <td><span style="font-family:'Space Mono',monospace;font-size:10px;color:#64748b">${escapeHtml(p.id || '')}</span></td>
             <td>${escapeHtml(p.nama || '')}</td>
-            <td><span style="font-size:10px;color:${String(p.kat).toLowerCase().includes('penunjang') ? '#7c3aed' : '#2563eb'}">${escapeHtml(p.kat || '')}</span></td>
+            <td><span style="font-size:10px;color:${String(p.kat).toLowerCase().includes('penunjang') ? '#8b5cf6' : '#f59e0b'}">${escapeHtml(p.kat || '')}</span></td>
             <td>
               <div class="prog">
                 <div class="prog-track">
@@ -1186,8 +1256,21 @@
           </tr>
         `;
       });
+    
+      document.getElementById('detailModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
 
-      panel.classList.add('show');
+    function closeDetailModal(event) {
+      if (event && event.target && event.target.id !== 'detailModal') return;
+    
+      document.getElementById('detailModal').classList.add('hidden');
+      document.body.style.overflow = '';
+    
+      if (activeCard) {
+        activeCard.classList.remove('active');
+        activeCard = null;
+      }
     }
 
     function buildFullTable(data) {
@@ -1278,6 +1361,15 @@
     document.addEventListener('DOMContentLoaded', async () => {
       buildYearOptions();
       await loadDashboard(DEFAULT_YEAR);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const modal = document.getElementById('detailModal');
+        if (modal && !modal.classList.contains('hidden')) {
+          closeDetailModal();
+        }
+      }
     });
   </script>
 </body>
