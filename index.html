@@ -738,7 +738,7 @@
 
   <script>
     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx2bKcBfhnVS_eBpJbSM5VTGdW2PqRPXdjvvhzPLBGuNosI4FR5KiASk6Pqwb2MsFj4KQ/exec';
-    const DEFAULT_YEAR = String(new Date().getFullYear());
+    const DEFAULT_YEAR = String(new Date().getFullYear() - 1);
 
     let dashboardData = null;
     let badanData = [];
@@ -824,15 +824,22 @@
       return getPredikatFromValue(nkc);
     }
 
-    function buildYearOptions(yearsFromApi = []) {
+    function buildYearOptions() {
       const select = document.getElementById('yearSelect');
-      const yearSet = new Set([DEFAULT_YEAR, ...yearsFromApi.map(String)]);
-      const years = [...yearSet].sort((a,b) => Number(b) - Number(a));
-
-      select.innerHTML = years.map(y => `<option value="${y}" ${y===String(DEFAULT_YEAR)?'selected':''}>${y}</option>`).join('');
+      const currentYear = new Date().getFullYear();
+    
+      const years = [];
+      for (let y = currentYear; y >= currentYear - 5; y--) {
+        years.push(String(y));
+      }
+    
+      select.innerHTML = years
+        .map(y => `<option value="${y}" ${y === DEFAULT_YEAR ? 'selected' : ''}>${y}</option>`)
+        .join('');
+    
       select.addEventListener('change', () => loadDashboard(select.value));
     }
-
+    
     function showLoading(isLoading) {
       document.getElementById('loadingBox').classList.toggle('hidden', !isLoading);
       document.getElementById('dashboardContent').classList.toggle('hidden', isLoading);
@@ -1219,19 +1226,6 @@
       buildFullTable(data);
     }
 
-    async function getAvailableYears() {
-      try {
-        const url = `${APPS_SCRIPT_URL}?action=getEvaluasi`;
-        const res = await fetch(url);
-        const json = await res.json();
-
-        if (!json.success || !Array.isArray(json.data)) return [];
-        return [...new Set(json.data.map(r => String(r.tahun || '')).filter(Boolean))];
-      } catch (e) {
-        return [];
-      }
-    }
-
     async function loadDashboard(tahun) {
       try {
         showLoading(true);
@@ -1264,9 +1258,8 @@
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
-      const years = await getAvailableYears();
-      buildYearOptions(years);
-      await loadDashboard(years[0] || DEFAULT_YEAR);
+      buildYearOptions();
+      await loadDashboard(DEFAULT_YEAR);
     });
   </script>
 </body>
