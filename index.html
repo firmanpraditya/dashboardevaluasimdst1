@@ -657,6 +657,12 @@
       font-size: 12px;
       color: var(--text3);
     }
+
+    @media (max-width: 900px) {
+      .insight-mini-cards {
+        grid-template-columns: 1fr !important;
+      }
+    }
     
   </style>
 </head>
@@ -755,6 +761,38 @@
           </div>
         </div>
       </div>
+
+      <div class="chart-card" style="margin-top: 20px;">
+      <h3>Insight Pelaksanaan Program</h3>
+      <p>Ringkasan temuan utama dari perbandingan Penunjang dan Pembangunan</p>
+    
+      <div class="stats-row insight-mini-cards" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 18px;">
+        <div class="stat-card purple">
+          <div class="stat-label">Rata-rata NKC Penunjang</div>
+          <div class="stat-value purple" id="avgNkcPenunjang">0</div>
+          <div class="stat-sub">Capaian rata-rata kegiatan penunjang</div>
+        </div>
+    
+        <div class="stat-card yellow">
+          <div class="stat-label">Rata-rata NKC Pembangunan</div>
+          <div class="stat-value yellow" id="avgNkcPembangunan">0</div>
+          <div class="stat-sub">Capaian rata-rata kegiatan pembangunan</div>
+        </div>
+    
+        <div class="stat-card blue">
+          <div class="stat-label">Gap NKC</div>
+          <div class="stat-value blue" id="gapNkc">0</div>
+          <div class="stat-sub">Selisih penunjang vs pembangunan</div>
+        </div>
+      </div>
+    
+      <div style="background:#f8fafc; border:1px solid var(--border); border-radius:14px; padding:16px 18px;">
+        <div style="font-size:12px; color:var(--text2); margin-bottom:8px;">Kesimpulan Singkat</div>
+        <div id="insightText" style="font-size:14px; line-height:1.7; color:var(--text);">
+          Insight akan muncul di sini.
+        </div>
+      </div>
+    </div>
 
       <div class="page" id="page-badan">
       <div class="section-head">
@@ -1017,6 +1055,34 @@
         `${formatNumber(ov.serapan_terendah_nilai,1)}<span style="font-size:18px;">%</span>`;
       document.getElementById('agSerapanTerendahNama').textContent =
         ov.serapan_terendah_nama || '-';
+
+        document.getElementById('avgNkcPenunjang').textContent = formatNumber(ov.avg_nkc_penunjang, 1);
+        document.getElementById('avgNkcPembangunan').textContent = formatNumber(ov.avg_nkc_pembangunan, 1);
+        document.getElementById('gapNkc').textContent = formatNumber(ov.gap_nkc, 1);
+      
+        let insight = '';
+      
+        if (ov.avg_nkc_penunjang > ov.avg_nkc_pembangunan) {
+          insight =
+            `Secara umum, capaian program Penunjang lebih baik dibanding program Pembangunan. ` +
+            `Rata-rata NKC Penunjang sebesar ${formatNumber(ov.avg_nkc_penunjang, 1)}, ` +
+            `sedangkan Pembangunan sebesar ${formatNumber(ov.avg_nkc_pembangunan, 1)}. ` +
+            `Hal ini menunjukkan bahwa kegiatan internal seperti rapat komisi, raker dengan BP MA, dan rakor relatif lebih konsisten terlaksana, ` +
+            `sementara kegiatan pelayanan/pembangunan masih membutuhkan perhatian dan percepatan pelaksanaan. ` +
+            `Tingkat keterlaksanaan Penunjang mencapai ${formatNumber(ov.pct_terlaksana_penunjang, 1)}%, ` +
+            `sedangkan Pembangunan ${formatNumber(ov.pct_terlaksana_pembangunan, 1)}%.`;
+        } else if (ov.avg_nkc_penunjang < ov.avg_nkc_pembangunan) {
+          insight =
+            `Secara umum, capaian program Pembangunan lebih baik dibanding program Penunjang. ` +
+            `Rata-rata NKC Pembangunan sebesar ${formatNumber(ov.avg_nkc_pembangunan, 1)}, ` +
+            `sedangkan Penunjang sebesar ${formatNumber(ov.avg_nkc_penunjang, 1)}.`;
+        } else {
+          insight =
+            `Secara umum, capaian program Penunjang dan Pembangunan relatif seimbang. ` +
+            `Rata-rata NKC keduanya berada pada kisaran yang hampir sama.`;
+        }
+      
+        document.getElementById('insightText').textContent = insight;
     }
 
     const COLOR_PENUNJANG = '#8b5cf6';   // ungu
