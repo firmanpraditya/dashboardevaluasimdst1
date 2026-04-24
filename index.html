@@ -1066,11 +1066,11 @@
           insight =
             `Secara umum, capaian program Penunjang lebih baik dibanding program Pembangunan. ` +
             `Rata-rata NKC Penunjang sebesar ${formatNumber(ov.avg_nkc_penunjang, 1)}, ` +
-            `sedangkan Pembangunan sebesar ${formatNumber(ov.avg_nkc_pembangunan, 1)}. ` +
+            `sedangkan rata-rata NKC Pembangunan sebesar ${formatNumber(ov.avg_nkc_pembangunan, 1)}. ` +
+            `Selain itu, persentase program yang terlaksana pada kategori Penunjang mencapai ${formatNumber(ov.pct_terlaksana_penunjang, 1)}%, ` +
+            `sedangkan pada kategori Pembangunan sebesar ${formatNumber(ov.pct_terlaksana_pembangunan, 1)}%. ` +
             `Hal ini menunjukkan bahwa kegiatan internal seperti rapat komisi, raker dengan BP MA, dan rakor relatif lebih konsisten terlaksana, ` +
-            `sementara kegiatan pelayanan/pembangunan masih membutuhkan perhatian dan percepatan pelaksanaan. ` +
-            `Tingkat keterlaksanaan Penunjang mencapai ${formatNumber(ov.pct_terlaksana_penunjang, 1)}%, ` +
-            `sedangkan Pembangunan ${formatNumber(ov.pct_terlaksana_pembangunan, 1)}%.`;
+            `sementara kegiatan pelayanan/pembangunan masih membutuhkan perhatian dan percepatan pelaksanaan.`;
         } else if (ov.avg_nkc_penunjang < ov.avg_nkc_pembangunan) {
           insight =
             `Secara umum, capaian program Pembangunan lebih baik dibanding program Penunjang. ` +
